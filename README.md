@@ -47,3 +47,6 @@ than what they saw before (though there are a few small changes)
    had happened.
 
 
+# Teardown Steps (Do After the Demo)
+
+1. Deactivate the virtual environment: `cd ..; deactivate`
