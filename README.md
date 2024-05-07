@@ -33,18 +33,14 @@ than what they saw before (though there are a few small changes)
 2. Run the Temporal Service: `temporal server start-dev` (optionally 
    add the `--db-filename` option, so that the state of Workflow 
    Executions isn't lost if the service crashes).
-3. Run the Worker: `python worker.py` (and be sure to explain what 
-   a Worker is)
-4. Run the Starter: `python start-execution.py 10` (and before you
-   start it, be sure to explain that this initiates execution the 
-   Workflow that does the counting and the number you want to count 
-   to is being passed as input to it)
-5. Switch back to the terminal where the Worker is running and 
-   press Ctrl-C to terminate the process. Point out the last number
-   displayed and ask what the next number will be. Unlike the volatile 
-   execution shown before, this is a durable execution because of 
-   Temporal, so it's going to resume where it left off as if nothing
-   had happened.
+3. Run `python run-workflow.py 10` (this launches a Worker, submits 
+   the Workflow for execution, and shuts down the Worker when that 
+   execution is complete; the argument passed is value counted up to).
+4. Press Ctrl-C to terminate the process while the count is underway. 
+   Point out the last number displayed and ask what the next number 
+   will be. Unlike the volatile  execution shown before, this is a 
+   durable execution because of Temporal, so it's going to resume 
+   where it left off as if nothing had happened.
 
 
 # Teardown Steps (Do After the Demo)
