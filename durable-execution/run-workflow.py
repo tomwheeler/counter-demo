@@ -23,17 +23,24 @@ async def main():
     # Catch Ctrl-C so we can limit excessive output in terminal
     try:
         client = await Client.connect("localhost:7233")
-        async with Worker(
+        worker = Worker(
              client,
-             task_queue="counting-task-queue",
-             workflows=[CountingWorkflow]
-        ):
-            await client.execute_workflow(
-                CountingWorkflow.run,
-                limit,
-                id="counting-workflow-id",
-                task_queue="counting-task-queue",
-            )
+             task_queue="counter-demo",
+             workflows=[CountingWorkflow],
+        )
+
+        await worker.run()
+        await client.execute_workflow(
+            CountingWorkflow.run,
+            limit,
+            id="counting-workflow-id",
+            task_queue="counter-demo",
+        )
+
+        handle = client.get_workflow_handle(  
+            workflow_id="counting-workflow-id",
+        )
+        results = await handle.result()
     except asyncio.exceptions.CancelledError:
         sys.exit(0)
     except KeyboardInterrupt:
