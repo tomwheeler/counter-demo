@@ -1,16 +1,10 @@
 # counter-demo
-Demonstrates durable execution by using a simple counter in Python (before and after Temporal)
-
-# Setup Steps (Do Before the Demo)
-
-1. Create a virtual environment: `python -m venv .`
-2. Activate virtual environment: `source ./bin/activate`
-3. Install Temporal SDK: `pip install temporalio`
+Demonstrates durable execution by using a simple counter in Go (before and after Temporal)
 
 # Demonstrate Volatile Execution (AKA "Before Temporal")
 1. `cd volatile-execution`
-2. Open `counter.py` in an editor and briefly explain the code
-3. Execute it by running `python counter.py`
+2. Open `main.go` in an editor and briefly explain the code
+3. Execute it by running `go run main.py`
 4. While it is running, press Ctrl-C in the terminal to terminate it
 5. Point out the last number displayed and ask the audience what 
    number they expect to see upon restarting it. Most programmers
