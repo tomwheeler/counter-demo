@@ -7,25 +7,33 @@ from temporalio.worker import Worker
 
 from businesslogic import CountingWorkflow
 
-
 async def main():
+    if len(sys.argv) != 2:
+        print("Must specify limit argument!")
+        sys.exit(1)
+
+    limit = int(sys.argv[1])
+
     # Customize the logger output to match the print statement
     logging.basicConfig(
         level=logging.INFO,
         format= '%(message)s',
     )
 
-
-    client = await Client.connect("localhost:7233")
-    worker = Worker(
-        client,
-        task_queue="counting-task-queue",
-        workflows=[CountingWorkflow],
-    )
-
     # Catch Ctrl-C so we can limit excessive output in terminal
     try:
-        await worker.run()
+        client = await Client.connect("localhost:7233")
+        async with Worker(
+             client,
+             task_queue="counting-task-queue",
+             workflows=[CountingWorkflow]
+        ):
+            await client.execute_workflow(
+                CountingWorkflow.run,
+                limit,
+                id="counting-workflow-id",
+                task_queue="counting-task-queue",
+            )
     except asyncio.exceptions.CancelledError:
         sys.exit(0)
     except KeyboardInterrupt:
@@ -35,3 +43,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+

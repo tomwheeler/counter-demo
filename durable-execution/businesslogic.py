@@ -9,7 +9,7 @@ class CountingWorkflow:
 
     @workflow.run
     async def run(self, limit: int) -> None:
-        workflow.logger.info("*** Starting WF - Will count to %d" % limit)
+        workflow.logger.info("*** Starting Workflow - Will count to %d" % limit)
 
         number = 1
         while number <= limit:
