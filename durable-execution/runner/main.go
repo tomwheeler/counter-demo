@@ -11,7 +11,9 @@ import (
 const TASK_QUEUE_NAME = "counter-tasks" 
 
 func main() {
-	c, err := client.Dial(client.Options{})
+	c, err := client.Dial(client.Options{
+		Logger: example.NewMinimalLogger(),
+	})
 	if err != nil {
 		log.Fatalln("Unable to create client", err)
 	}

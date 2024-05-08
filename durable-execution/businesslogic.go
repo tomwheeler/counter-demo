@@ -2,6 +2,7 @@ package example
 
 import (
 	"go.temporal.io/sdk/workflow"
+	"fmt"
 	"time"
 )
 
@@ -12,7 +13,7 @@ func CounterWorkflow(ctx workflow.Context, limit int) error {
 	number := 1
 
 	for number <= limit {
-		logger.Info("Current number:", number)
+		logger.Info(fmt.Sprintf("Current Number: %d", number))
 		number = number + 1
 		workflow.Sleep(ctx, time.Second*1)
 	}
