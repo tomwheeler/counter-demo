@@ -2,47 +2,37 @@ import asyncio
 import logging
 import sys
 
-from temporalio.client import Client
+from temporalio.client import Client, WorkflowExecutionStatus
 from temporalio.worker import Worker
+from temporalio import exceptions
 
-from businesslogic import CountingWorkflow
+from businesslogic import CounterWorkflow
 
 async def main():
-    if len(sys.argv) != 2:
-        print("Must specify limit argument!")
-        sys.exit(1)
-
-    limit = int(sys.argv[1])
-
     # Customize the logger output to match the print statement
     logging.basicConfig(
         level=logging.INFO,
         format= '%(message)s',
     )
 
-    # Catch Ctrl-C so we can limit excessive output in terminal
     try:
         client = await Client.connect("localhost:7233")
-        worker = Worker(
-             client,
-             task_queue="counter-demo",
-             workflows=[CountingWorkflow],
-        )
-
-        await worker.run()
-        await client.execute_workflow(
-            CountingWorkflow.run,
-            limit,
-            id="counting-workflow-id",
-            task_queue="counter-demo",
-        )
-
-        handle = client.get_workflow_handle(  
-            workflow_id="counting-workflow-id",
-        )
-        results = await handle.result()
+        async with Worker(client, task_queue="counter", workflows=[CounterWorkflow]):
+            result = await client.execute_workflow(
+                CounterWorkflow.run,
+                id="counterwf",
+                task_queue="counter",
+            )
     except asyncio.exceptions.CancelledError:
         sys.exit(0)
+    except exceptions.WorkflowAlreadyStartedError as err:
+        async with Worker(client, task_queue="counter", workflows=[CounterWorkflow]):
+            workflow_handle = client.get_workflow_handle("counterwf")
+            description = await workflow_handle.describe()
+            while description.status != WorkflowExecutionStatus.COMPLETED:
+                description = await workflow_handle.describe()
+                await asyncio.sleep(1)
+    # Catch Ctrl-C so we can limit excessive output in terminal
     except KeyboardInterrupt:
         sys.exit(0)
 
