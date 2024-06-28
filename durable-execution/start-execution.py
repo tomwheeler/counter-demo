@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import sys
+from datetime import timedelta
 
 from temporalio.client import Client, WorkflowExecutionStatus
 from temporalio.worker import Worker
@@ -11,7 +12,7 @@ from businesslogic import CounterWorkflow
 async def main():
     # Customize the logger output to match the print statement
     logging.basicConfig(
-        level=logging.INFO,
+        level=logging.WARN,
         format= '%(message)s',
     )
 
@@ -22,6 +23,7 @@ async def main():
                 CounterWorkflow.run,
                 id="counterwf",
                 task_queue="counter",
+				task_timeout=timedelta(seconds=3)
             )
     except asyncio.exceptions.CancelledError:
         sys.exit(0)
