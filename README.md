@@ -9,8 +9,9 @@ Demonstrates durable execution by using a simple counter in Python (before and a
 
 # Demonstrate Volatile Execution (AKA "Before Temporal")
 1. `cd volatile-execution`
-2. Open `counter.py` in an editor and briefly explain the code
-3. Execute it by running `python counter.py`
+2. Open `businesslogic.py` in an editor and briefly explain the code, 
+   and then explain `start-execution.py`, which calls it.
+3. Execute by running `python start-execution.py`
 4. While it is running, press Ctrl-C in the terminal to terminate it
 5. Point out the last number displayed and ask the audience what 
    number they expect to see upon restarting it. Most programmers
@@ -33,7 +34,7 @@ than what they saw before (though there are a few small changes)
 2. Run the Temporal Service: `temporal server start-dev` (optionally 
    add the `--db-filename` option, so that the state of Workflow 
    Executions isn't lost if the service crashes).
-3. Run `python run-workflow.py 10` (this launches a Worker, submits 
+3. Run `python start-execution.py 10` (this launches a Worker, submits 
    the Workflow for execution, and shuts down the Worker when that 
    execution is complete; the argument passed is value counted up to).
 4. Press Ctrl-C to terminate the process while the count is underway. 
