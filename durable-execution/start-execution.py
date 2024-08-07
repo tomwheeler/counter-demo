@@ -9,26 +9,36 @@ from temporalio import exceptions
 
 from businesslogic import CounterWorkflow
 
+
 async def main():
     # Customize the logger output to match the print statement
     logging.basicConfig(
         level=logging.WARN,
-        format= '%(message)s',
+        format="%(message)s",
     )
 
     try:
         client = await Client.connect("localhost:7233")
-        async with Worker(client, task_queue="counter", workflows=[CounterWorkflow]):
+        async with Worker(
+            client, 
+            task_queue="counter", 
+            workflows=[CounterWorkflow],
+        ):
             result = await client.execute_workflow(
                 CounterWorkflow.run,
+				10, # value of 'limit' argument
                 id="counterwf",
                 task_queue="counter",
-				task_timeout=timedelta(seconds=3)
+                task_timeout=timedelta(seconds=3),
             )
     except asyncio.exceptions.CancelledError:
         sys.exit(0)
     except exceptions.WorkflowAlreadyStartedError as err:
-        async with Worker(client, task_queue="counter", workflows=[CounterWorkflow]):
+        async with Worker(
+            client, 
+            task_queue="counter", 
+            workflows=[CounterWorkflow]
+        ):
             workflow_handle = client.get_workflow_handle("counterwf")
             description = await workflow_handle.describe()
             while description.status != WorkflowExecutionStatus.COMPLETED:
@@ -39,7 +49,5 @@ async def main():
         sys.exit(0)
 
 
-
 if __name__ == "__main__":
     asyncio.run(main())
-
