@@ -34,9 +34,9 @@ than what they saw before (though there are a few small changes)
 2. Run the Temporal Service: `temporal server start-dev` (optionally 
    add the `--db-filename` option, so that the state of Workflow 
    Executions isn't lost if the service crashes).
-3. Run `python start-execution.py 10` (this launches a Worker, submits 
+3. Run `python start-execution.py` (this launches a Worker, submits 
    the Workflow for execution, and shuts down the Worker when that 
-   execution is complete; the argument passed is value counted up to).
+   execution is complete.
 4. Press Ctrl-C to terminate the process while the count is underway. 
    Point out the last number displayed and ask what the next number 
    will be. Unlike the volatile  execution shown before, this is a 
