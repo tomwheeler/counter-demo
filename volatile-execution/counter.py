@@ -12,3 +12,8 @@ def count_to(limit):
         print(number)
         number = number + 1
         sleep(1)
+
+
+# Call the function defined above, specifying the limit in
+# parentheses. In other words, this will count from 1 to 10.
+count_to(10)
