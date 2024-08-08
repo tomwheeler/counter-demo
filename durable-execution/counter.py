@@ -5,10 +5,23 @@ from datetime import timedelta
 
 from temporalio.client import Client, WorkflowExecutionStatus
 from temporalio.worker import Worker
+from temporalio import workflow
 from temporalio import exceptions
 
-from businesslogic import CounterWorkflow
 
+
+@workflow.defn
+class CounterWorkflow:
+    # Make the logging output look more like that of print()
+    workflow.logger.workflow_info_on_message = False
+
+    @workflow.run
+    async def run(self, limit: int) -> None:
+        number = 1
+        while number <= limit:
+            workflow.logger.warn(number)
+            number = number + 1
+            await asyncio.sleep(1)
 
 async def main():
     # Customize the logger output to match the print statement
