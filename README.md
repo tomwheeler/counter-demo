@@ -7,8 +7,8 @@ Demonstrates durable execution by using a simple counter in Python (before and a
 2. Activate virtual environment: `source ./bin/activate`
 3. Install Temporal SDK: `pip install temporalio`
 
-# Demonstrate Volatile Execution (AKA "Before Temporal")
-1. `cd volatile-execution`
+# Demonstrate Normal Execution (AKA "Before Temporal")
+1. `cd normal-execution`
 2. Open `businesslogic.py` in an editor and briefly explain the code, 
    and then explain `start-execution.py`, which calls it.
 3. Execute by running `python start-execution.py`
@@ -39,7 +39,7 @@ than what they saw before (though there are a few small changes)
    execution is complete.
 4. Press Ctrl-C to terminate the process while the count is underway. 
    Point out the last number displayed and ask what the next number 
-   will be. Unlike the volatile  execution shown before, this is a 
+   will be. Unlike the normal execution shown before, this is a 
    durable execution because of Temporal, so it's going to resume 
    where it left off as if nothing had happened.
 
